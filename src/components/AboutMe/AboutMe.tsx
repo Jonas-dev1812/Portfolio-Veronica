@@ -6,10 +6,16 @@ import GreetingText from "../GreetingText/GreetingText";
 import TechStack from "../TechStack/TechStack";
 import Education from "../Education/Education";
 import GitHubRepos from "../GithubRepos/GithubRepos";
-import { FaBriefcase, FaGithub, FaGraduationCap } from "react-icons/fa";
+import {
+  FaBriefcase,
+  FaGithub,
+  FaGraduationCap,
+  FaHeart,
+} from "react-icons/fa";
 import SocialMedia from "../SocialMedia/SocialMedia";
 import { useColorModeValue } from "../ui/color-mode";
 import ContactMe from "../ContactMe/ContactMe";
+import Hobby from "../Hobby/Hobby";
 
 const AboutMe = () => {
   const containerBg = useColorModeValue(
@@ -80,6 +86,20 @@ const AboutMe = () => {
               </HStack>
             </Tabs.Trigger>
             <Tabs.Trigger
+              value="Hobby"
+              bg={cardBg}
+              _selected={{
+                color: useColorModeValue("teal.600", "teal.300"),
+                bg: useColorModeValue("gray.200", "gray.700"),
+              }}
+            >
+              {" "}
+              <HStack spacing={2}>
+                <Icon as={FaHeart} />
+                <Text>Hobby</Text>
+              </HStack>
+            </Tabs.Trigger>
+            <Tabs.Trigger
               value="GitHubRepos"
               bg={cardBg}
               _selected={{
@@ -99,6 +119,10 @@ const AboutMe = () => {
           </Tabs.Content>
           <Tabs.Content value="Education">
             <Education />
+          </Tabs.Content>
+
+          <Tabs.Content value="Hobby">
+            <Hobby />
           </Tabs.Content>
           <Tabs.Content value="GitHubRepos">
             <GitHubRepos />
