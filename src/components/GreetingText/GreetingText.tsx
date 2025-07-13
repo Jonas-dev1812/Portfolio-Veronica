@@ -1,70 +1,106 @@
-import { Heading, Text, VStack } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { Heading, Text, VStack, chakra } from "@chakra-ui/react";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
+import { useColorMode, useColorModeValue } from "../ui/color-mode";
+
+const MotionSpan = motion(chakra.span);
 
 function GreetingText() {
+  const { toggleColorMode, colorMode } = useColorMode();
+  const controls = useAnimation();
+  const headingColor = useColorModeValue("gray.800", "gray.200");
+  const textColor = useColorModeValue("gray.600", "gray.300");
+
+  const darkFlashAnimation = async () => {
+    while (true) {
+      await controls.start({
+        opacity: 1,
+        color: "#FFFFCC",
+        textShadow:
+          "0 0 30px #FFFFCC, 0 0 50px #FFFFCC, 0 0 70px #FFFFCC, 0 0 90px #FFFFCC",
+        transition: { duration: Math.random() * 5, ease: "linear" }, //Starts random
+      });
+
+      const numFlashes = Math.random() < 0.3 ? 3 : 1; // 30 % off 3 Times flicker
+      for (let i = 0; i < numFlashes; i++) {
+        await controls.start({
+          opacity: 0.05,
+          color: "gray.900",
+          textShadow: "none",
+          transition: { duration: 0.05, ease: "linear" }, // Fast "off"-Phase
+        });
+        await controls.start({
+          opacity: 1,
+          color: "#FFFFCC",
+          textShadow:
+            "0 0 30px #FFFFCC, 0 0 50px #FFFFCC, 0 0 70px #FFFFCC, 0 0 90px #FFFFCC",
+          transition: { duration: 0.05, ease: "linear" }, // Fast "on"-Phase
+        });
+        // Short Breaks between flicker
+        if (i < numFlashes - 1) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, Math.random() * 150 + 150)
+          ); // Random Breaks
+        }
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.random() * 2000 + 5000)
+      ); // Random Breaks
+    }
+  };
+
+  // useEffect to Control animation
+  useEffect(() => {
+    if (colorMode === "dark") {
+      controls.stop();
+      const timer = setTimeout(() => {
+        darkFlashAnimation();
+      }, 50);
+      return () => clearTimeout(timer);
+    } else {
+      controls.stop();
+      controls.set({ color: "gray.800", textShadow: "none", opacity: 1 });
+    }
+    return () => {
+      controls.stop();
+    };
+  }, [colorMode, controls]);
+
   return (
     <VStack align="flex-start" gap={4}>
-      {" "}
-      {/* VStack für Begrüßung und Einleitungstext */}
       <Heading
         as="h1"
         size={"xl"}
-        color="gray.200"
+        color={headingColor}
         textAlign={{ base: "center", md: "left" }}
       >
         Hi, I´m{" "}
-        <motion.span // motion.span für die Animation verwenden
-          initial={{
-            opacity: 1,
-            color: "#FFFFCC",
-            textShadow: "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC",
-          }} // Startzustand: sichtbar, hellgelb mit starkem Leuchten
-          animate={{
-            opacity: [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1], // Lange sichtbare Phasen, dann 3 schnelle Dips zu 0 für Blitze
-            color: [
-              "#FFFFCC",
-              "#FFFFCC",
-              "transparent",
-              "#FFFFCC", // Erster Blitz zu transparent
-              "#FFFFCC",
-              "transparent",
-              "#FFFFCC", // Zweiter Blitz zu transparent
-              "#FFFFCC",
-              "transparent",
-              "#FFFFCC",
-              "#FFFFCC", // Dritter Blitz zu transparent
-            ],
-            textShadow: [
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Starkes Leuchten
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Starkes Leuchten
-              "0 0 0px #FFFFCC", // Kein Schatten während des Blitzes
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Zurück zum Leuchten
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Starkes Leuchten
-              "0 0 0px #FFFFCC", // Kein Schatten während des Blitzes
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Zurück zum Leuchten
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Starkes Leuchten
-              "0 0 0px #FFFFCC", // Kein Schatten während des Blitzes
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Zurück zum Leuchten
-              "0 0 20px #FFFFCC, 0 0 35px #FFFFCC, 0 0 45px #FFFFCC", // Starkes Leuchten
-            ],
-          }}
-          transition={{
-            duration: 10, // Gesamtdauer des Animationszyklus (z.B. 10 Sekunden)
-            times: [
-              0, 0.8, 0.805, 0.81, 0.85, 0.855, 0.86, 0.9, 0.905, 0.91, 1,
-            ], // Präzise Zeitpunkte für 3 schnelle Blitze
-            repeat: Infinity, // Endlos wiederholen
-            ease: "linear", // Lineare Übergänge für abrupte Änderungen
-          }}
-          style={{ display: "inline-block" }} // Wichtig, damit die Animation korrekt angewendet wird
-        >
-          Veronica
-        </motion.span>
+        {colorMode === "light" ? (
+          <chakra.span
+            key="veronica-light"
+            color="gray.800"
+            textShadow="none"
+            style={{ display: "inline-block", cursor: "pointer" }}
+            onClick={toggleColorMode}
+          >
+            Veronica
+          </chakra.span>
+        ) : (
+          <MotionSpan
+            key="veronica-dark"
+            animate={controls}
+            style={{ display: "inline-block", cursor: "pointer" }}
+            onClick={toggleColorMode}
+          >
+            Veronica
+          </MotionSpan>
+        )}
         !
       </Heading>
       <Text
         fontSize="lg"
-        color="gray.300"
+        color={textColor}
         textAlign={{ base: "center", md: "left" }}
       >
         I'm a passionate Frontend Developer with a strong focus on modern web
