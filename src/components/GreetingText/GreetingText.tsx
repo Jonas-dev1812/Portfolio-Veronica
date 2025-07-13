@@ -81,6 +81,8 @@ function GreetingText() {
             key="veronica-light"
             color="gray.800"
             textShadow="none"
+            fontFamily="Rouge Script, cursive"
+            fontSize={100}
             style={{ display: "inline-block", cursor: "pointer" }}
             onClick={toggleColorMode}
           >
@@ -90,6 +92,8 @@ function GreetingText() {
           <MotionSpan
             key="veronica-dark"
             animate={controls}
+            fontFamily="Rouge Script, cursive"
+            fontSize={100}
             style={{ display: "inline-block", cursor: "pointer" }}
             onClick={toggleColorMode}
           >

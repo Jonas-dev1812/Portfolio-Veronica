@@ -28,7 +28,7 @@ function ProfessionalExperience() {
   const checkIconColor = useColorModeValue("green.500", "green.300");
 
   return (
-    <Card.Root w="100%" bg={cardBg} borderRadius="lg" boxShadow="dark-lg">
+    <Card.Root w="100%" bg={cardBg} borderRadius="lg">
       {" "}
       <CardHeader pb={0} marginBottom={6}>
         <Heading as="h2" size="2xl" color={headingColor}>

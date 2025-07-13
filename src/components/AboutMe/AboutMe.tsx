@@ -20,7 +20,7 @@ import Hobby from "../Hobby/Hobby";
 const AboutMe = () => {
   const containerBg = useColorModeValue(
     "linear-gradient(130deg,rgba(252, 217, 237, 1) 0%, rgba(217, 231, 255, 1) 82%)",
-    "linear-gradient(130deg,rgba(2, 0, 36, 1) 0%, rgba(0, 0, 158, 1) 82%)"
+    "linear-gradient(130deg, #182848 0%, #4b6cb7 100%)"
   );
 
   const containerColor = useColorModeValue("gray.800", "gray.200");
