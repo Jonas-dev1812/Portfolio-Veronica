@@ -16,6 +16,7 @@ import SocialMedia from "../SocialMedia/SocialMedia";
 import { useColorModeValue } from "../ui/color-mode";
 import ContactMe from "../ContactMe/ContactMe";
 import Hobby from "../Hobby/Hobby";
+import Footer from "../Footer/Footer";
 
 const AboutMe = () => {
   const containerBg = useColorModeValue(
@@ -128,6 +129,8 @@ const AboutMe = () => {
             <GitHubRepos />
           </Tabs.Content>
         </Tabs.Root>
+
+        <Footer />
       </VStack>
     </Container>
   );
