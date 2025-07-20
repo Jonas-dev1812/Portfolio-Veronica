@@ -55,39 +55,45 @@ function Footer() {
           position="fixed"
           top="0"
           left="0"
-          width="100vw"
-          height="100vh"
+          width={{ base: "100%", md: "100vw" }} // NEU: 100vw auf Mobil, feste Breite auf Desktop
+          height={{ base: "100%", md: "100vh" }}
           bg={modalOverlayBg}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          zIndex="modal"
-          onClick={onClose}
+          zIndex={9999}
+          onClick={onClose} // Schließt das Modal, wenn auf das Overlay geklickt wird
         >
+          {/* Die Box, die den eigentlichen Modal-Inhalt darstellt */}
           <Box
-            bg={modalContentBg}
-            borderRadius="lg"
-            boxShadow="xl"
-            p={6}
-            minW={{ base: "90%", sm: "400px", md: "500px" }}
-            maxW="500px"
+            bg={modalContentBg} // Hintergrundfarbe für den Inhalt
+            borderRadius={{ base: "none", md: "lg" }} // NEU: Kein Border Radius auf Mobil
+            boxShadow={{ base: "none", md: "xl" }} // NEU: Kein Schatten auf Mobil
+            p={{ base: 4, md: 6 }} // Padding responsiv gestalten
+            width={{ base: "100%", md: "500px" }} // NEU: 100vw auf Mobil, feste Breite auf Desktop
+            height={{ base: "100%", md: "auto" }} // NEU: 100vh auf Mobil, auto Höhe auf Desktop
+            minW={{ base: "100%", md: "400px" }} // NEU: minW 100vw auf Mobil
+            maxW={{ base: "100%", md: "500px" }} // NEU: maxW 100vw auf Mobil
+            maxH={{ base: "100%", md: "80vh" }} // NEU: maxH 100vh auf Mobil, 80vh auf Desktop
             position="relative"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()} // Klick-Propagation stoppen, damit das Modal nicht schließt
+            overflowY="auto" // Ermöglicht Scrollen, wenn Inhalt die maxH überschreitet
           >
-            {/* Modal Header */}
+            {/* Dein benutzerdefinierter Header mit dem Schließen-Icon */}
             <HStack justifyContent="flex-end" alignItems="center" mb={4}>
+              {/* Optional: Wenn du einen Titel im Header haben möchtest, hier einfügen */}
+              {/* <Text fontSize="xl" fontWeight="bold" color={modalHeaderColor}>Impressum</Text> */}
               <Icon
                 as={MdClose}
                 boxSize={6}
-                alignSelf={"right"}
                 color={closeIconColor}
                 cursor="pointer"
-                onClick={onClose}
+                onClick={onClose} // Schließt das Modal
                 _hover={{ opacity: 0.7 }}
               />
             </HStack>
 
-            {/* Modal Body */}
+            {/* Der Inhalt des Modals (LegalNotice Komponente) */}
             <LegalNotice />
           </Box>
         </Box>

@@ -1,4 +1,4 @@
-import { HStack, Link, Icon } from "@chakra-ui/react";
+import { HStack, Link, Icon, Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import {
   FaInstagram,
@@ -7,14 +7,48 @@ import {
   FaGithub,
 } from "react-icons/fa";
 import { useColorModeValue } from "../ui/color-mode";
+import ReactCountryFlag from "react-country-flag";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const MotionLink = motion(Link);
 
 function SocialMedia() {
   const iconColor = useColorModeValue("gray.600", "gray.300");
+  const buttonBg = useColorModeValue("gray.200", "gray.700");
+  const buttonColor = useColorModeValue("gray.700", "gray.200");
+  const buttonHoverBg = useColorModeValue("gray.300", "gray.600");
+
+  const { language, toggleLanguage } = useLanguage();
 
   return (
-    <HStack gap={4} position="absolute" top="4" right="4" zIndex="tooltip">
+    <HStack gap={4} position="absolute" top="4" right="4" zIndex={999}>
+      <Button
+        onClick={toggleLanguage}
+        bg={buttonBg}
+        color={buttonColor}
+        _hover={{ bg: buttonHoverBg }}
+        size="sm"
+        borderRadius="md"
+        fontWeight="bold"
+      >
+        {language === "de" ? (
+          <HStack gap={1}>
+            <ReactCountryFlag
+              countryCode="GB"
+              svg
+              style={{ width: "1.5em", height: "1.5em" }}
+            />
+          </HStack>
+        ) : (
+          <HStack gap={1}>
+            <ReactCountryFlag
+              countryCode="DE"
+              svg
+              style={{ width: "1.5em", height: "1.5em" }}
+            />
+          </HStack>
+        )}
+      </Button>
       {/* Instagram */}
       <MotionLink
         href="https://www.instagram.com/verocardenasd"

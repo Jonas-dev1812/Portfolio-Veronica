@@ -11,6 +11,7 @@ import { MdEmail, MdClose } from "react-icons/md";
 import { useState } from "react";
 import { useColorModeValue } from "../ui/color-mode";
 import { motion } from "framer-motion";
+import Constants from "../../core/const";
 
 const MotionButton = motion(Button);
 
@@ -34,8 +35,6 @@ function ContactMe() {
   const modalBodyColor = useColorModeValue("gray.700", "gray.200");
   const emailColor = useColorModeValue("blue.600", "blue.300");
   const closeIconColor = useColorModeValue("gray.600", "gray.400");
-
-  const emailAddress = "veronicacardenasdallos@gmail.com";
 
   return (
     <>
@@ -66,13 +65,13 @@ function ContactMe() {
           position="fixed"
           top="0"
           left="0"
-          width="100vw"
-          height="100vh"
+          width={{ base: "100%", md: "100vw" }} // NEU: 100vw auf Mobil, feste Breite auf Desktop
+          height={{ base: "100%", md: "100vh" }}
           bg={modalOverlayBg}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          zIndex="modal"
+          zIndex={9999}
           onClick={onClose}
         >
           <Box
@@ -111,10 +110,10 @@ function ContactMe() {
                   fontSize="xl"
                   fontWeight="bold"
                   color={emailColor}
-                  href={`mailto:${emailAddress}`}
+                  href={`mailto:${Constants.email}`}
                   _hover={{ textDecoration: "underline" }}
                 >
-                  {emailAddress}
+                  {Constants.email}
                 </Link>
               </HStack>
             </VStack>

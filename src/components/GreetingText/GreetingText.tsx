@@ -2,6 +2,8 @@ import { Heading, Text, VStack, chakra } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 import { useColorMode, useColorModeValue } from "../ui/color-mode";
+import { useLanguage } from "../../contexts/LanguageContext";
+import greetingContent from "../../translations/greeting.json";
 
 const MotionSpan = motion(chakra.span);
 
@@ -10,6 +12,10 @@ function GreetingText() {
   const controls = useAnimation();
   const headingColor = useColorModeValue("gray.800", "gray.200");
   const textColor = useColorModeValue("gray.600", "gray.300");
+
+  const { language } = useLanguage();
+
+  const content = greetingContent[language];
 
   const darkFlashAnimation = async () => {
     while (true) {
@@ -76,37 +82,40 @@ function GreetingText() {
         textAlign={{ base: "center", md: "left" }}
       >
         Hi, I´m{" "}
-        {colorMode === "light" ? (
-          <chakra.span
-            key="veronica-light"
-            color="gray.800"
-            textShadow="none"
-            fontFamily="Rouge Script, cursive"
-            fontSize={100}
-            style={{ display: "inline-block", cursor: "pointer" }}
-            onClick={toggleColorMode}
-          >
-            Veronica
-          </chakra.span>
-        ) : (
-          <MotionSpan
-            key="veronica-dark"
-            animate={controls}
-            fontFamily="Rouge Script, cursive"
-            fontSize={100}
-            style={{ display: "inline-block", cursor: "pointer" }}
-            onClick={toggleColorMode}
-          >
-            Veronica
-          </MotionSpan>
-        )}
-        !
+        <chakra.span display="inline-block" whiteSpace="nowrap">
+          {colorMode === "light" ? (
+            <chakra.span
+              key="veronica-light"
+              color="gray.800"
+              textShadow="none"
+              fontFamily="Rouge Script, cursive"
+              fontSize={100}
+              style={{ display: "inline-block", cursor: "pointer" }}
+              onClick={toggleColorMode}
+            >
+              Veronica
+            </chakra.span>
+          ) : (
+            <MotionSpan
+              key="veronica-dark"
+              animate={controls}
+              fontFamily="Rouge Script, cursive"
+              fontSize={100}
+              style={{ display: "inline-block", cursor: "pointer" }}
+              onClick={toggleColorMode}
+            >
+              Veronica
+            </MotionSpan>
+          )}{" "}
+          !
+        </chakra.span>
       </Heading>
       <Text
         fontSize="lg"
         color={textColor}
         textAlign={{ base: "center", md: "left" }}
       >
+        {content.text}
         I'm a passionate Frontend Developer with a strong focus on modern web
         technologies like React and TypeScript. My goal is to create intuitive
         and user-friendly interfaces that are both functional and aesthetically
